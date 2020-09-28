@@ -2,7 +2,7 @@ const express = require('express');
 const { graphqlHTTP } = require('express-graphql');
 const Query = require('./resolvers/Query');
 // const Mutation = require('./resolvers/Mutation');
-// const db = require('./db');
+const db = require('./db');
 
 // Create a server:
 const app = express();

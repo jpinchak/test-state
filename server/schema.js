@@ -1,8 +1,7 @@
 const { buildSchema } = require('graphql');
 const schema = buildSchema(
   `type Query {
-  color: Color!
-  id: String
+  color: Color
 }
 
 type Mutation {

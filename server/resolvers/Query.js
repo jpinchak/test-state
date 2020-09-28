@@ -1,7 +1,7 @@
 const db = require('../db');
 
-function color(parent, args, ctx, info) {
+function color() {
   return db[0];
 }
 
-module.exports = color;
+module.exports = { color };

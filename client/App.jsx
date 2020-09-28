@@ -5,7 +5,7 @@ function App() {
   const query = `{color{cssColor}}`;
 
   useEffect(() => {
-    fetch(`/?=query${query}`)
+    fetch(`/graphql?query=${query}`)
       .then((data) => data.json())
       .then((result) => setColor(result.data.color.cssColor))
       .catch((err) => console.log(err));
