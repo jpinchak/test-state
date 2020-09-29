@@ -10,6 +10,10 @@ type Mutation {
   newRed: Color
 }
 
+type Subscription {
+  updatedColor: Color
+}
+
 type Color {
   id: ID!
   cssColor: String!
