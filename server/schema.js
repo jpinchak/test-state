@@ -6,7 +6,8 @@ const schema = buildSchema(
 }
 
 type Mutation {
-  newColor: Color
+  newBlue: Color
+  newRed: Color
 }
 
 type Color {

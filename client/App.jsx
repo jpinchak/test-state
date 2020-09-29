@@ -11,10 +11,27 @@ function App() {
       .catch((err) => console.log(err));
   }, []);
 
-  const handleClick = () => {
-    fetch(`/graphql`)
+  const handleClickRed = () => {
+    const options = {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query: `mutation{newRed{id cssColor}}` }),
+    };
+    fetch(`/graphql`, options)
       .then((data) => data.json())
-      .then((result) => setColor(result.data.color.cssColor))
+      .then((result) => setColor(result.data.newRed.cssColor))
+      .catch((err) => console.log(err));
+  };
+
+  const handleClickBlue = () => {
+    const options = {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query: `mutation{newBlue{id cssColor}}` }),
+    };
+    fetch(`/graphql`, options)
+      .then((data) => data.json())
+      .then((result) => setColor(result.data.newBlue.cssColor))
       .catch((err) => console.log(err));
   };
 
@@ -23,7 +40,8 @@ function App() {
       <h1 style={{ backgroundColor: color || 'purple' }}>
         GraphQL Boilerplate
       </h1>
-      <button onClick={handleClick}>MAKE IT BLUE</button>
+      <button onClick={handleClickBlue}>MAKE IT BLUE</button>
+      <button onClick={handleClickRed}>MAKE IT RED</button>
     </>
   );
 }

@@ -1,8 +1,13 @@
 const db = require('../db');
 
 const Mutation = {
-  newColor(parent, args, ctx, info) {
+  newBlue(parent, args, ctx, info) {
     db[0].cssColor = 'blue';
+    return db[0];
+  },
+
+  newRed(parent, args, ctx, info) {
+    db[0].cssColor = 'red';
     return db[0];
   },
 };
