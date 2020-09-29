@@ -4,16 +4,16 @@ type Query {
 }
 
 type Mutation {
-  newBlue(testArgs: String): Color
-  newRed: Color
+  newColor(colorArg: String): Color
 }
 
 type Subscription {
-  updatedColor: UpdatedColorPayload
+  updatedColor: UpdatedColorPayload!
 }
 
 type UpdatedColorPayload {
   cssColor: String!
+  id: ID!
 }
 
 type Color {

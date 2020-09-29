@@ -1,15 +1,9 @@
-function newBlue(parent, args, { db, pubsub }, info) {
-  // console.log(`testArgs: ${args.testArgs}`);
+function newColor(parent, args, { db, pubsub }, info) {
+  console.log(`ColorArg: ${args.colorArg}`);
   // console.log(`Context: ${hello}`);
-  db[0].cssColor = 'blue';
-  console.log(db[0]);
-  pubsub.publish('COLOR_MUTATED', db[0]);
+  db[0].cssColor = args.colorArg;
+  pubsub.publish('COLOR_MUTATED', { updatedColor: db[0] });
   return db[0];
 }
 
-function newRed(parent, args, { db }, info) {
-  db[0].cssColor = 'red';
-  return db[0];
-}
-
-module.exports = { newBlue, newRed };
+module.exports = { newColor };

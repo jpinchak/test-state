@@ -15,29 +15,17 @@ function App() {
       .catch((err) => console.log(err));
   }, []);
 
-  const handleClickRed = () => {
-    const options = {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query: `mutation{newRed{id cssColor}}` }),
-    };
-    fetch(`/graphql`, options)
-      .then((data) => data.json())
-      .then((result) => setColor(result.data.newRed.cssColor))
-      .catch((err) => console.log(err));
-  };
-
-  const handleClickBlue = () => {
+  const handleClick = (chosenColor) => {
     const options = {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        query: `mutation{newBlue(testArgs: "Tiny"){id cssColor}}`,
+        query: `mutation{newColor(colorArg: "${chosenColor}"){id cssColor}}`,
       }),
     };
     fetch(`/graphql`, options)
       .then((data) => data.json())
-      .then((result) => setColor(result.data.newBlue.cssColor))
+      .then((result) => setColor(result.data.newColor.cssColor))
       .catch((err) => console.log(err));
   };
 
@@ -46,8 +34,15 @@ function App() {
       <h1 style={{ backgroundColor: color || 'purple' }}>
         GraphQL Boilerplate
       </h1>
-      <button onClick={handleClickBlue}>MAKE IT BLUE</button>
-      <button onClick={handleClickRed}>MAKE IT RED</button>
+      <button onClick={() => handleClick('blue')}>MAKE IT BLUE</button>
+      <button onClick={() => handleClick('red')}>MAKE IT RED</button>
+      <button onClick={() => handleClick('turquoise')}>
+        MAKE IT TURQUOISE
+      </button>
+      <button onClick={() => handleClick('lightslategray')}>
+        MAKE IT LIGHT SLATE GRAY
+      </button>
+      <button onClick={() => handleClick('orange')}>MAKE IT ERRNGE</button>
     </>
   );
 }
