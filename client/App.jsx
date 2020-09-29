@@ -11,12 +11,19 @@ function App() {
       .catch((err) => console.log(err));
   }, []);
 
+  const handleClick = () => {
+    fetch(`/graphql`)
+      .then((data) => data.json())
+      .then((result) => setColor(result.data.color.cssColor))
+      .catch((err) => console.log(err));
+  };
+
   return (
     <>
       <h1 style={{ backgroundColor: color || 'purple' }}>
         GraphQL Boilerplate
       </h1>
-      <button>MAKE IT BLUE</button>
+      <button onClick={handleClick}>MAKE IT BLUE</button>
     </>
   );
 }

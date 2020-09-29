@@ -1,14 +1,21 @@
 const express = require('express');
 const { graphqlHTTP } = require('express-graphql');
 const Query = require('./resolvers/Query');
-// const Mutation = require('./resolvers/Mutation');
+const Mutation = require('./resolvers/Mutation');
+const Subscription = require('./resolvers/Subscription');
 const db = require('./db');
 
 // Create a server:
 const app = express();
 
+const resolvers = {
+  ...Query,
+  ...Mutation,
+  ...Subscription,
+};
+
 // Create root resolvers:
-const rootValue = Query;
+const rootValue = resolvers;
 
 const schema = require('./schema');
 
