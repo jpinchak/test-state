@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 
 function App() {
-  const [color, setColor] = useState('');
-  const query = `{color{cssColor}}`;
+  const [color, setColor] = useState('purple');
 
   useEffect(() => {
-    fetch(`/graphql?query=${query}`)
+    const options = {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query: `query{color{cssColor}}` }),
+    };
+    fetch(`/graphql`, options)
       .then((data) => data.json())
       .then((result) => setColor(result.data.color.cssColor))
       .catch((err) => console.log(err));
@@ -27,7 +31,9 @@ function App() {
     const options = {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query: `mutation{newBlue{id cssColor}}` }),
+      body: JSON.stringify({
+        query: `mutation{newBlue(testArgs: "Tiny"){id cssColor}}`,
+      }),
     };
     fetch(`/graphql`, options)
       .then((data) => data.json())

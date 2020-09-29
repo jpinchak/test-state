@@ -1,17 +1,19 @@
-const { buildSchema } = require('graphql');
-const schema = buildSchema(
-  `type Query {
+type Query {
   color: Color
   test: Test
 }
 
 type Mutation {
-  newBlue: Color
+  newBlue(testArgs: String): Color
   newRed: Color
 }
 
 type Subscription {
-  updatedColor: Color
+  updatedColor: UpdatedColorPayload
+}
+
+type UpdatedColorPayload {
+  cssColor: String!
 }
 
 type Color {
@@ -22,7 +24,3 @@ type Color {
 type Test {
   message: String!
 }
-`
-);
-
-module.exports = schema;

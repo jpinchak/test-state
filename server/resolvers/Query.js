@@ -1,10 +1,6 @@
-const db = require('../db');
 const Query = {
-  color() {
+  color(parent, args, { db }) {
     return db[0];
-  },
-  test() {
-    return { message: 'hello' };
   },
 };
 module.exports = Query;

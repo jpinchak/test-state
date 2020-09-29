@@ -1,11 +1,8 @@
-const db = require('../db');
-const { PubSub } = require('graphql-subscriptions');
-
-const pubsub = new PubSub();
-
 const Subscription = {
   updatedColor: {
-    subscribe: () => pubsub.asyncIterator('COLOR_MUTATED'),
+    subscribe(parent, args, { pubsub, db }) {
+      return pubsub.asyncIterator('COLOR_MUTATED');
+    },
   },
 };
 
