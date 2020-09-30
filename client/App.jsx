@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import openSocket from 'socket.io-client';
+//import openSocket from 'socket.io-client';
 
 function App() {
   const [color, setColor] = useState('purple');
