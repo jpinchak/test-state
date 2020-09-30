@@ -4,7 +4,7 @@ import { InMemoryCache } from '@apollo/client/cache';
 import { HttpLink, split } from '@apollo/client';
 import { WebSocketLink } from '@apollo/link-ws';
 
-const endpoint = 'localhost:4000';
+const endpoint = 'colorgameql.netlify.app';
 
 const wsLink = new WebSocketLink({
   uri: `ws://${endpoint}/graphql`,

@@ -5,6 +5,7 @@ const Query = require('./resolvers/Query');
 const Subscription = require('./resolvers/Subscription');
 const db = require('./db');
 const http = require('http');
+const path = require('path');
 
 // const bodyParser = require('body-parser');
 // const cors = require('cors');
@@ -25,6 +26,9 @@ const server = new ApolloServer({
   resolvers,
   context: { db, pubsub },
 });
+
+app.use('/', express.static('client'));
+app.use('/build', express.static(path.join(__dirname, '../build')));
 
 server.applyMiddleware({ app });
 
