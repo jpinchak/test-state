@@ -37,7 +37,7 @@ module.exports = {
     proxy: {
       '/graphql': 'http://localhost:4000',
       '/subscriptions': {
-        target: 'ws://localhost:4000/subscriptions',
+        target: 'ws://localhost:4000/',
         ws: true, // important
       },
     },

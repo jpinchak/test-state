@@ -1,72 +1,40 @@
-//const express = require('express');
-const { GraphQLServer, PubSub } = require('graphql-yoga');
-// const { execute, subscribe } = require('graphql');
-// const { graphqlHTTP } = require('express-graphql');
-// const { PubSub } = require('graphql-subscriptions');
-// const { SubscriptionServer } = require('subscriptions-transport-ws');
-const Query = require('./resolvers/Query');
+const express = require('express');
+const { ApolloServer, PubSub } = require('apollo-server-express');
 const Mutation = require('./resolvers/Mutation');
+const Query = require('./resolvers/Query');
 const Subscription = require('./resolvers/Subscription');
-//const { buildSchema } = require('graphql');
 const db = require('./db');
 
-// Create a server:
-//const app = express();
+// const bodyParser = require('body-parser');
+// const cors = require('cors');
+// const { execute, subscribe } = require('graphql');
+const http = require('http');
+// const { SubscriptionServer } = require('subscriptions-transport-ws');
 
-// Create root resolvers:
-const rootValue = {
-  Query,
-  Mutation,
-  Subscription,
-};
+const typeDefs = require('./schema');
+const resolvers = { Mutation, Query, Subscription };
 
-// Create schema
-//const schema = require('./schema');
-//const expressSchema = buildSchema(schema);
-// Create pubsub
+const PORT = 4000;
+const app = express();
+
 const pubsub = new PubSub();
 
-//*************************graphQL-yoga */
-const server = new GraphQLServer({
-  typeDefs: `./server/schema.graphql`,
-  resolvers: rootValue,
-  context: {
-    pubsub,
-    db,
-  },
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context: { db, pubsub },
 });
 
-server.start(
-  {
-    endpoint: '/graphql',
-    subscriptions: 'subscriptions',
-    playground: '/playground',
-  },
-  () => console.log('Server is running on localhost:4000☄')
-);
+server.applyMiddleware({ app });
 
-//*******************************express-graphQL */
-//Use those to handle incoming requests:
+const httpServer = http.createServer(app);
+server.installSubscriptionHandlers(httpServer);
 
-// app.use(
-//   '/graphql',
-//   graphqlHTTP({
-//     schema: expressSchema,
-//     rootValue,
-//     context: { pubsub: pubsub, db },
-//     graphiql: true,
-//   })
-// );
-
-// //Start the server:
-// const server = app.listen(4000, () =>
-//   console.log('Server started on port 4000')
-// );
-
-//Create subscription server
-// SubscriptionServer.create(
-//   { schema, rootValue, execute, subscribe },
-//   {
-//     server, // Listens for 'upgrade' websocket events on the raw server
-//   }
-// );
+httpServer.listen({ port: PORT }, () => {
+  console.log(
+    `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`
+  );
+  console.log(
+    `🚀 Subscriptions ready at ws://localhost:${PORT}${server.subscriptionsPath}`
+  );
+});

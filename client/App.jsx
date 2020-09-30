@@ -8,26 +8,24 @@ function App() {
   useEffect(() => {
     // establish socket connection
     // const socket = openSocket(`ws://localhost:8080/subscriptions`);
-    const socket = new WebSocket('ws://localhost:8080/subscriptions');
+    //const socket = new WebSocket('ws://localhost:8080/subscriptions');
     // console.log(socket);
     // socket.onopen = () => {
     //   console.log('opened!');
     // };
-
     // socket.onmessage((data) => {
     //   console.log(data);
     // });
-
-    // const options = {
-    //   method: 'post',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   keepalive: true,
-    //   body: JSON.stringify({ query: `subscription{updatedColor{cssColor}}` }),
-    // };
-    // fetch(`/subscriptions`, options)
-    //   .then((data) => data.json())
-    //   .then((result) => setColor(result.data.color.cssColor))
-    //   .catch((err) => console.log(err));
+    const options = {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      keepalive: true,
+      body: JSON.stringify({ query: `subscription{updatedColor{cssColor}}` }),
+    };
+    fetch(`/subscriptions`, options)
+      .then((data) => data.json())
+      .then((result) => setColor(result.data.color.cssColor))
+      .catch((err) => console.log(err));
   }, []);
 
   const handleClick = (chosenColor) => {

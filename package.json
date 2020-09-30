@@ -4,12 +4,19 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "apollo-server-express": "^2.18.1",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "graphql": "^15.3.0",
     "graphql-yoga": "^1.18.3",
+    "http": "0.0.1-security",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
     "sass": "^1.26.11",
-    "socket.io-client": "^2.3.0"
+    "socket.io-client": "^2.3.0",
+    "subscriptions-transport-ws": "^0.9.18"
   },
   "devDependencies": {
     "@babel/core": "^7.11.6",
