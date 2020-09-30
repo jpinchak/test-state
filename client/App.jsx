@@ -10,20 +10,42 @@ function App() {
     subscription {
       updatedColor {
         cssColor
+        aql {
+          mutationSendTime
+          mutationReceived
+          subscriberReceived
+        }
       }
     }
   `;
+
+  //when client receives the new data
   const { data, loading } = useSubscription(colorSubscription, {
-    onSubscriptionData: (client) =>
-      setColor(client.subscriptionData.data.updatedColor.cssColor),
+    onSubscriptionData: (client) => {
+      console.log(client);
+      const aqlToSendToDB = client.subscriptionData.data.updatedColor.aql;
+      aqlToSendToDB.subscriberReceived = Date.now();
+      aqlToSendToDB.roundtripTime = `${
+        aqlToSendToDB.subscriberReceived - aqlToSendToDB.mutationSendTime
+      } ms`;
+      console.log(aqlToSendToDB);
+      setColor(client.subscriptionData.data.updatedColor.cssColor);
+    },
   });
 
+  //when a new color is clicked
   const handleClick = (chosenColor) => {
     const options = {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        query: `mutation{newColor(colorArg: "${chosenColor}"){id cssColor}}`,
+        query: `mutation{
+          newColor(
+            colorArg: "${chosenColor}",
+            aql: {mutationSendTime: "${Date.now()}",
+              mutationReceived: "",
+              subscriberReceived: "",}
+            ){id cssColor}}`,
       }),
     };
     fetch(`/graphql`, options)

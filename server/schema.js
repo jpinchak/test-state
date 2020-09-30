@@ -4,7 +4,7 @@ module.exports = `type Query {
 }
 
 type Mutation {
-  newColor(colorArg: String): Color
+  newColor(colorArg: String, aql: AQLInput): Color
 }
 
 type Subscription {
@@ -14,6 +14,19 @@ type Subscription {
 type UpdatedColorPayload {
   cssColor: String!
   id: ID!
+  aql: AQL
+}
+
+type AQL {
+  mutationSendTime: String,
+  mutationReceived: String,
+  subscriberReceived: String,
+}
+
+input AQLInput {
+  mutationSendTime: String,
+  mutationReceived: String,
+  subscriberReceived: String,
 }
 
 type Color {

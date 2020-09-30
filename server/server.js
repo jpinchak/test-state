@@ -27,7 +27,8 @@ const server = new ApolloServer({
   context: { db, pubsub },
 });
 
-app.use('/', express.static('client'));
+app.get('/', express.static(path.resolve(__dirname)));
+
 app.use('/build', express.static(path.join(__dirname, '../build')));
 
 server.applyMiddleware({ app });
