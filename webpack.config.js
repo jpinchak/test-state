@@ -36,6 +36,10 @@ module.exports = {
     publicPath: '/build/',
     proxy: {
       '/graphql': 'http://localhost:4000',
+      '/subscriptions': {
+        target: 'ws://localhost:4000/subscriptions',
+        ws: true, // important
+      },
     },
   },
 };

@@ -34,11 +34,15 @@ const server = new GraphQLServer({
     pubsub,
     db,
   },
-  getEndpoint: true,
 });
 
-server.start({ endpoint: '/graphql' }, () =>
-  console.log('Server is running on localhost:4000☄')
+server.start(
+  {
+    endpoint: '/graphql',
+    subscriptions: 'subscriptions',
+    playground: '/playground',
+  },
+  () => console.log('Server is running on localhost:4000☄')
 );
 
 //*******************************express-graphQL */

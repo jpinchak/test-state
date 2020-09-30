@@ -8,7 +8,7 @@ type Mutation {
 }
 
 type Subscription {
-  updatedColor: UpdatedColorPayload!
+  updatedColor: UpdatedColorPayload
 }
 
 type UpdatedColorPayload {
