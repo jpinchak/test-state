@@ -1,32 +1,22 @@
 import React, { useState, useEffect } from 'react';
+import { useSubscription, gql } from '@apollo/client';
+
 //import openSocket from 'socket.io-client';
 
 function App() {
   const [color, setColor] = useState('purple');
-  //const [socket, setSocket] = useState(null);
 
-  useEffect(() => {
-    // establish socket connection
-    // const socket = openSocket(`ws://localhost:8080/subscriptions`);
-    //const socket = new WebSocket('ws://localhost:8080/subscriptions');
-    // console.log(socket);
-    // socket.onopen = () => {
-    //   console.log('opened!');
-    // };
-    // socket.onmessage((data) => {
-    //   console.log(data);
-    // });
-    const options = {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      keepalive: true,
-      body: JSON.stringify({ query: `subscription{updatedColor{cssColor}}` }),
-    };
-    fetch(`/subscriptions`, options)
-      .then((data) => data.json())
-      .then((result) => setColor(result.data.color.cssColor))
-      .catch((err) => console.log(err));
-  }, []);
+  const colorSubscription = gql`
+    subscription {
+      updatedColor {
+        cssColor
+      }
+    }
+  `;
+  const { data, loading } = useSubscription(colorSubscription, {
+    onSubscriptionData: (client) =>
+      setColor(client.subscriptionData.data.updatedColor.cssColor),
+  });
 
   const handleClick = (chosenColor) => {
     const options = {
@@ -58,7 +48,7 @@ function App() {
 
   return (
     <div style={{ backgroundColor: color, height: '100vh' }}>
-      <h1 style={{ textAlign: 'center' }}>GraphQL Boilerplate</h1>
+      <h1 style={{ textAlign: 'center' }}>Color Game</h1>
       <div style={styles.buttonColumn}>
         <button style={styles.button} onClick={() => handleClick('blue')}>
           MAKE IT BLUE

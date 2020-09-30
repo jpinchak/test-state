@@ -4,17 +4,17 @@ import { InMemoryCache } from '@apollo/client/cache';
 import { HttpLink, split } from '@apollo/client';
 import { WebSocketLink } from '@apollo/link-ws';
 
-const endpoint = 'localhost:4000/subscriptions';
+const endpoint = 'localhost:4000';
 
 const wsLink = new WebSocketLink({
-  uri: `ws://${endpoint}`,
+  uri: `ws://${endpoint}/graphql`,
   options: {
     reconnect: true,
   },
 });
 
 const httpLink = new HttpLink({
-  uri: `https://${endpoint}`,
+  uri: `https://${endpoint}/graphql`,
 });
 
 const link = split(
