@@ -1,16 +1,32 @@
 function newColor(parent, args, { db, pubsub }, info) {
-  db[0].cssColor = args.colorArg;
+  db.color.cssColor = args.colorArg;
   pubsub.publish('COLOR_MUTATED', {
     updatedColor: {
-      ...db[0],
+      ...db.color,
       aql: {
-        mutationSendTime: args.aql.mutationSendTime,
+        ...args.aql,
         mutationReceived: new Date(),
-        subscriberReceived: '',
       },
     },
   });
-  return db[0];
+  return db.color;
 }
 
-module.exports = { newColor };
+
+function newLuckyNumber(parent, args, { db, pubsub }, info) {
+  db.number.luckyNum = args.numberArg;
+  pubsub.publish('NUMBER_MUTATED', {
+    updatedNumber: {
+      ...db.number,
+      aql: {
+        ...args.aql,
+        mutationReceived: new Date(),
+      },
+    },
+  }
+  );
+  return db.number;
+}
+
+
+module.exports = { newColor, newLuckyNumber };

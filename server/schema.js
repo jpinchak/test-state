@@ -1,14 +1,16 @@
 module.exports = `type Query {
   color: Color
-  test: Test
 }
+
 
 type Mutation {
   newColor(colorArg: String, aql: AQLInput): Color
+  newLuckyNumber(numberArg: Int, aql: AQLInput): LuckyNumber
 }
 
 type Subscription {
   updatedColor: UpdatedColorPayload
+  updatedNumber: UpdatedNumberPayload
 }
 
 type UpdatedColorPayload {
@@ -17,16 +19,25 @@ type UpdatedColorPayload {
   aql: AQL
 }
 
+type UpdatedNumberPayload {
+  luckyNum: Int
+  aql: AQL
+}
+
 type AQL {
   mutationSendTime: String,
   mutationReceived: String,
   subscriberReceived: String,
+  mutationId: ID,
+  resolver: String,
 }
 
 input AQLInput {
   mutationSendTime: String,
   mutationReceived: String,
   subscriberReceived: String,
+  mutationId: ID,
+  resolver: String,
 }
 
 type Color {
@@ -34,6 +45,7 @@ type Color {
   cssColor: String!
 }
 
-type Test {
-  message: String!
-}`;
+type LuckyNumber {
+  luckyNum: Int
+}
+`;

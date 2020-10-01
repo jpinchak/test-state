@@ -1,3 +1,3 @@
-const color = [{ id: 1, cssColor: 'red' }];
+const db = { color: {id: 1, cssColor: 'red' }, number: {luckyNum: 222}};
 
-module.exports = color;
+module.exports = db;
