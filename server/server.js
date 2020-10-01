@@ -15,9 +15,10 @@ const path = require('path');
 
 const typeDefs = require('./schema');
 const resolvers = { Mutation, Query, Subscription };
-
+const analyticsRouter = require('./analyticsRouter');
 const PORT = 4000;
 const app = express();
+app.use(express.json());
 
 const pubsub = new PubSub();
 
@@ -30,6 +31,8 @@ const server = new ApolloServer({
 app.get('/', express.static(path.resolve(__dirname)));
 
 app.use('/build', express.static(path.join(__dirname, '../build')));
+
+app.use('/analytics', analyticsRouter)
 
 server.applyMiddleware({ app });
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSubscription, gql } from '@apollo/client';
+import { v4 as uuidv4 } from 'uuid';
 
 //import openSocket from 'socket.io-client';
 
@@ -28,6 +29,19 @@ function App() {
         aqlToSendToDB.subscriberReceived - aqlToSendToDB.mutationSendTime
       } ms`;
       console.log(aqlToSendToDB);
+      const {mutationSendTime, mutationReceived, subscriberReceived, roundtripTime} = aqlToSendToDB;
+      const options = {
+        method: 'post',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: uuidv4(), mutationSendTime, mutationReceived, subscriberReceived, roundtripTime 
+        }),
+      }
+        fetch(`/analytics`, options)
+        // .then((data) => data.json())
+        // .then((result) => setColor(result.data.newColor.cssColor))
+        .catch((err) => console.log(err));
+
       setColor(client.subscriptionData.data.updatedColor.cssColor);
     },
   });

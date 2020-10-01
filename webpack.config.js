@@ -35,6 +35,7 @@ module.exports = {
   devServer: {
     publicPath: '/build/',
     proxy: {
+      '/analytics': 'http://localhost:4000',
       '/graphql': 'http://localhost:4000',
       '/subscriptions': {
         target: 'ws://localhost:4000',
