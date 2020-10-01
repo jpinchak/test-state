@@ -22,7 +22,6 @@ function App() {
   //when client receives the new data
   const { data, loading } = useSubscription(colorSubscription, {
     onSubscriptionData: (client) => {
-      console.log(client);
       const aqlToSendToDB = client.subscriptionData.data.updatedColor.aql;
       aqlToSendToDB.subscriberReceived = Date.now();
       aqlToSendToDB.roundtripTime = `${

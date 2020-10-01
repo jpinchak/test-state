@@ -1,5 +1,4 @@
 function newColor(parent, args, { db, pubsub }, info) {
-  console.log('entered newColor mutation resolver');
   db[0].cssColor = args.colorArg;
   pubsub.publish('COLOR_MUTATED', {
     updatedColor: {
