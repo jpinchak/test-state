@@ -1,4 +1,4 @@
-function newColor(parent, args, { db, pubsub }, info) {
+function newColor(parent, args, { db, pubsub, traql }, info) {
   db.color.cssColor = args.colorArg;
   pubsub.publish('COLOR_MUTATED', {
     updatedColor: {
@@ -9,9 +9,17 @@ function newColor(parent, args, { db, pubsub }, info) {
       },
     },
   });
+  traql[args.aql.mutationId] = {
+    openedTime: Date.now(),
+    expectedNumberOfAqls: pubsub.subscribers,
+    aqlsReceivedBack: [],
+  };
+  // trigger new traql (an object)
+  // traql has mutation id from AQL
+  // number of current subscribers
+  // if x amt of time passes without returnAQL, generate error and send to db
   return db.color;
 }
-
 
 function newLuckyNumber(parent, args, { db, pubsub }, info) {
   db.number.luckyNum = args.numberArg;
@@ -23,10 +31,8 @@ function newLuckyNumber(parent, args, { db, pubsub }, info) {
         mutationReceived: new Date(),
       },
     },
-  }
-  );
+  });
   return db.number;
 }
-
 
 module.exports = { newColor, newLuckyNumber };
