@@ -11,9 +11,10 @@ function newColor(parent, args, { db, pubsub, traql }, info) {
   });
   traql[args.aql.mutationId] = {
     openedTime: Date.now(),
-    expectedNumberOfAqls: pubsub.subscribers,
+    expectedNumberOfAqls: pubsub.subscriptions,
     aqlsReceivedBack: [],
   };
+
   // trigger new traql (an object)
   // traql has mutation id from AQL
   // number of current subscribers
