@@ -6,6 +6,7 @@ const Subscription = require('./resolvers/Subscription');
 const db = require('./db');
 const http = require('http');
 const path = require('path');
+const traql = require('./traql');
 
 // const bodyParser = require('body-parser');
 // const cors = require('cors');
@@ -25,14 +26,14 @@ const pubsub = new PubSub();
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: { db, pubsub },
+  context: { db, pubsub, traql },
 });
 
 app.get('/', express.static(path.resolve(__dirname)));
 
 app.use('/build', express.static(path.join(__dirname, '../build')));
 
-app.use('/analytics', analyticsRouter)
+app.use('/analytics', analyticsRouter);
 
 server.applyMiddleware({ app });
 
