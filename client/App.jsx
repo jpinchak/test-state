@@ -62,6 +62,8 @@ function App() {
 
   //when a new color is clicked
   const handleClick = (chosenColor, resolver) => {
+    //remove this before extraction
+    setColor(chosenColor)
     const options = {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
@@ -223,7 +225,7 @@ function App() {
         <h1 style={{ fontSize: '5rem' }}> Lucky Number {luckyNumber} </h1>
         <button onClick={() => handleNumberClick('newLuckyNumber')}>
           {' '}
-          new Lucky Number{' '}
+          New Lucky Number{' '}
         </button>
       </div>
     </div>
