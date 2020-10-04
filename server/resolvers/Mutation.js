@@ -1,27 +1,15 @@
+const { newAql, newTraqlEntry } = require('../aql');
 function newColor(parent, args, { db, pubsub, traql }, info) {
   db.color.cssColor = args.colorArg;
   pubsub.publish('COLOR_MUTATED', {
     updatedColor: {
       ...db.color,
-      aql: {
-        ...args.aql,
-        mutationReceived: new Date(),
-      },
+      aql: newAql(args),
     },
   });
-  traql[args.aql.mutationId] = {
-    resolver: args.aql.resolver,
-    openedTime: Date.now(),
-    expectedNumberOfAqls: Math.floor(Object.keys(pubsub.subscriptions).length/traql.subResolvers),
-    aqlsReceivedBack: []
-  };
-  console.log('traql from within Mutation resolver', JSON.stringify(traql))
-  console.log("CLIENT IP ADDRESS", context.request.connection.remoteAddress)
-
-  // trigger new traql (an object)
-  // traql has mutation id from AQL
-  // number of current subscribers
-  // if x amt of time passes without returnAQL, generate error and send to db
+  // create new traql entry
+  newTraqlEntry(traql, args, pubsub);
+  //console.log("CLIENT IP ADDRESS", context.request.connection.remoteAddress)
   return db.color;
 }
 
