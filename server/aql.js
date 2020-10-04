@@ -6,6 +6,7 @@ function newTraqlEntry(traql, args, pubsub) {
       Object.keys(pubsub.subscriptions).length / traql.subResolvers
     ),
     aqlsReceivedBack: [],
+    userToken: args.aql.userToken
   };
 }
 

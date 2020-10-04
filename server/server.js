@@ -24,7 +24,7 @@ app.use(express.json());
 
 const pubsub = new PubSub();
 const traql = new Traql(resolvers);
-console.log('traql from server', JSON.stringify(traql));
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,
@@ -39,11 +39,7 @@ app.use('/build', express.static(path.join(__dirname, '../build')));
 
 app.use(
   '/analytics',
-  (req, res, next) => {
-    req.traql = traql;
-    return next();
-  },
-  analyticsRouter
+  analyticsRouter(traql)
 );
 
 server.applyMiddleware({ app });

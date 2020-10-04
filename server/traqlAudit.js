@@ -12,12 +12,12 @@ function traqlAudit(traql) {
             traql[key].aqlsReceivedBack.length
           ) {
             //create base of query string to send all values to db
-            let queryString = `insert into Aql (id, mutation_send_time, mutation_received_time, subscriber_received_time, latency, mutation_id, resolver, expected_subscribers, successful_subscribers) values `;
+            let queryString = `insert into Aql (id, mutation_send_time, mutation_received_time, subscriber_received_time, latency, mutation_id, resolver, expected_subscribers, successful_subscribers, user_token) values `;
             //loop through aqls in mutation Id
             for (let aql of traql[key].aqlsReceivedBack) {
               //add one aql of data to query string
               queryString = queryString.concat(
-                ` ('${aql.id}', '${aql.mutationSendTime}', '${aql.mutationReceived}', '${aql.subscriberReceived}', '${aql.roundtripTime}', '${aql.mutationId}', '${aql.resolver}', ${traql[key].expectedNumberOfAqls}, ${traql[key].aqlsReceivedBack.length}),`
+                ` ('${aql.id}', '${aql.mutationSendTime}', '${aql.mutationReceived}', '${aql.subscriberReceived}', '${aql.roundtripTime}', '${aql.mutationId}', '${aql.resolver}', ${traql[key].expectedNumberOfAqls}, ${traql[key].aqlsReceivedBack.length}), '${aql.userToken}`
               );
             }
             console.log('queryString before slice: ', queryString);
@@ -40,7 +40,7 @@ function traqlAudit(traql) {
               //if it doesnt, give it the property and continue
               //otherwise send successful aqls to db
               for (let aql of traql[key].aqlsReceivedBack) {
-                const errorQueryString = `insert into Aql (id, mutation_send_time, mutation_received_time, subscriber_received_time, latency, mutation_id, resolver, expected_subscribers, successful_subscribers, error) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`;
+                const errorQueryString = `insert into Aql (id, mutation_send_time, mutation_received_time, subscriber_received_time, latency, mutation_id, resolver, expected_subscribers, successful_subscribers, error, user_token) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`;
                 const errorQueryValues = [
                   aql.id,
                   aql.mutationSendTime,
@@ -52,6 +52,7 @@ function traqlAudit(traql) {
                   traql[key].expectedNumberOfAqls,
                   traql[key].aqlsReceivedBack.length,
                   true,
+                  aql.userToken
                 ];
                 console.log('i tried to send to db');
                 db.query(errorQueryString, errorQueryValues, (err, res) => {
@@ -61,7 +62,7 @@ function traqlAudit(traql) {
                 });
               }
               //create error row for db with mutationID and traql stats
-              const traqlErrorQueryString = `insert into Aql (mutation_id, mutation_received_time, resolver, expected_subscribers, successful_subscribers, error) values ($1, $2, $3, $4, $5, $6)`;
+              const traqlErrorQueryString = `insert into Aql (mutation_id, mutation_received_time, resolver, expected_subscribers, successful_subscribers, error, user_token) values ($1, $2, $3, $4, $5, $6, $7)`;
               const traqlErrorValues = [
                 key,
                 traql[key].openedTime,
@@ -69,6 +70,7 @@ function traqlAudit(traql) {
                 traql[key].expectedNumberOfAqls,
                 traql[key].aqlsReceivedBack.length,
                 true,
+                traql[key].userToken
               ];
               db.query(traqlErrorQueryString, traqlErrorValues, (err, res) => {
                 if (err) {

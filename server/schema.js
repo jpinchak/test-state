@@ -30,6 +30,7 @@ type AQL {
   subscriberReceived: String,
   mutationId: ID,
   resolver: String,
+  userToken: String,
 }
 
 input AQLInput {
@@ -38,6 +39,7 @@ input AQLInput {
   subscriberReceived: String,
   mutationId: ID,
   resolver: String,
+  userToken: String,
 }
 
 type Color {

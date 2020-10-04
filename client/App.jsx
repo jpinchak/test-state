@@ -6,6 +6,8 @@ function App() {
   const [color, setColor] = useState('purple');
   const [luckyNumber, setLuckyNumber] = useState(222);
 
+  const userToken = 'rocioAndMichael';
+
   const colorSubscription = gql`
     subscription {
       updatedColor {
@@ -16,6 +18,7 @@ function App() {
           subscriberReceived
           mutationId
           resolver
+          userToken
         }
       }
     }
@@ -28,7 +31,7 @@ function App() {
       aqlToSendToDB.subscriberReceived = Date.now();
       aqlToSendToDB.roundtripTime = `${
         aqlToSendToDB.subscriberReceived - aqlToSendToDB.mutationSendTime
-      } ms`;
+      }`;
       console.log(aqlToSendToDB);
       const {
         mutationSendTime,
@@ -37,6 +40,7 @@ function App() {
         roundtripTime,
         mutationId,
         resolver,
+        userToken,
       } = aqlToSendToDB;
       const options = {
         method: 'post',
@@ -49,6 +53,7 @@ function App() {
           roundtripTime,
           mutationId,
           resolver,
+          userToken,
         }),
       };
       fetch(`/analytics`, options)
@@ -76,6 +81,7 @@ function App() {
               subscriberReceived: "",
               mutationId: "${uuidv4()}",
               resolver: "${resolver}",
+              userToken: ${userToken},
             }
             ){id cssColor}}`,
       }),
@@ -163,7 +169,6 @@ function App() {
       .then((data) => data.json())
       .then((result) => setLuckyNumber(result.data.newLuckyNumber.luckyNum))
       .catch((err) => console.log(err));
-    // setLuckyNumber()
   };
 
   const styles = {

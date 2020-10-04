@@ -13,17 +13,15 @@ function newColor(parent, args, { db, pubsub, traql }, info) {
   return db.color;
 }
 
-function newLuckyNumber(parent, args, { db, pubsub }, info) {
+function newLuckyNumber(parent, args, { db, pubsub, traql }, info) {
   db.number.luckyNum = args.numberArg;
   pubsub.publish('NUMBER_MUTATED', {
     updatedNumber: {
       ...db.number,
-      aql: {
-        ...args.aql,
-        mutationReceived: new Date(),
-      },
+      aql: newAql(args),
     },
   });
+  newTraqlEntry(traql, args, pubsub);
   return db.number;
 }
 
