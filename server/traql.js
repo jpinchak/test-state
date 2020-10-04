@@ -1,3 +1,5 @@
-const traql = {};
+function Traql(resolvers) {
+  this.subResolvers = Object.keys(resolvers.Subscription).length;
+}
 
-module.exports = traql;
+module.exports = Traql;

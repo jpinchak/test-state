@@ -11,9 +11,11 @@ function newColor(parent, args, { db, pubsub, traql }, info) {
   });
   traql[args.aql.mutationId] = {
     openedTime: Date.now(),
-    expectedNumberOfAqls: pubsub.subscriptions,
-    aqlsReceivedBack: [],
+    expectedNumberOfAqls: Math.floor(Object.keys(pubsub.subscriptions).length/traql.subResolvers),
+    aqlsReceivedBack: []
   };
+  console.log('traql from within Mutation resolver', JSON.stringify(traql))
+  console.log("CLIENT IP ADDRESS", context.request.connection.remoteAddress)
 
   // trigger new traql (an object)
   // traql has mutation id from AQL
