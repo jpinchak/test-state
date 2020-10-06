@@ -37,10 +37,7 @@ app.get('/', express.static(path.resolve(__dirname)));
 
 app.use('/build', express.static(path.join(__dirname, '../build')));
 
-app.use(
-  '/analytics',
-  analyticsRouter(traql)
-);
+app.use('/analytics', analyticsRouter(traql));
 
 server.applyMiddleware({ app });
 

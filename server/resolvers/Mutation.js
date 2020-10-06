@@ -1,5 +1,6 @@
 const { newAql, newTraqlEntry } = require('../aql');
 function newColor(parent, args, { db, pubsub, traql }, info) {
+  console.log(args);
   db.color.cssColor = args.colorArg;
   pubsub.publish('COLOR_MUTATED', {
     updatedColor: {

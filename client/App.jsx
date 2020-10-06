@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSubscription, gql } from '@apollo/client';
 import { v4 as uuidv4 } from 'uuid';
+import useAqlSubscription from './useAqlSubscription';
+import useAqlMutation from './useAqlMutation';
 
 function App() {
   const [color, setColor] = useState('purple');
@@ -27,69 +29,41 @@ function App() {
   //when client receives the new data
   const { data, loading } = useSubscription(colorSubscription, {
     onSubscriptionData: (client) => {
-      const aqlToSendToDB = client.subscriptionData.data.updatedColor.aql;
-      aqlToSendToDB.subscriberReceived = Date.now();
-      aqlToSendToDB.roundtripTime = `${
-        aqlToSendToDB.subscriberReceived - aqlToSendToDB.mutationSendTime
-      }`;
-      console.log(aqlToSendToDB);
-      const {
-        mutationSendTime,
-        mutationReceived,
-        subscriberReceived,
-        roundtripTime,
-        mutationId,
-        resolver,
-        userToken,
-      } = aqlToSendToDB;
-      const options = {
-        method: 'post',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          id: uuidv4(),
-          mutationSendTime,
-          mutationReceived,
-          subscriberReceived,
-          roundtripTime,
-          mutationId,
-          resolver,
-          userToken,
-        }),
-      };
-      fetch(`/analytics`, options)
-        // .then((data) => data.json())
-        // .then((result) => setColor(result.data.newColor.cssColor))
-        .catch((err) => console.log(err));
-
+      useAqlSubscription(client, 'updatedColor');
       setColor(client.subscriptionData.data.updatedColor.cssColor);
     },
   });
 
   //when a new color is clicked
   const handleClick = (chosenColor, resolver) => {
-    //remove this before extraction
-    setColor(chosenColor)
-    const options = {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        query: `mutation{
-          ${resolver}(
-            colorArg: "${chosenColor}",
-            aql: {mutationSendTime: "${Date.now()}",
-              mutationReceived: "",
-              subscriberReceived: "",
-              mutationId: "${uuidv4()}",
-              resolver: "${resolver}",
-              userToken: ${userToken},
-            }
-            ){id cssColor}}`,
-      }),
-    };
-    fetch(`/graphql`, options)
-      .then((data) => data.json())
-      .then((result) => setColor(result.data.newColor.cssColor))
-      .catch((err) => console.log(err));
+    const colorQuery = `mutation{newColor(colorArg: "${chosenColor}"){id cssColor}}`;
+    console.log(colorQuery);
+    setColor(chosenColor);
+
+    useAqlMutation(colorQuery).then((data) =>
+      console.log('data returned from useMutation:', data)
+    );
+    // const options = {
+    //   method: 'post',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({
+    //     query: `mutation{
+    //       ${resolver}(
+    //         colorArg: "${chosenColor}",
+    //         aql: {mutationSendTime: "${Date.now()}",
+    //           mutationReceived: "",
+    //           subscriberReceived: "",
+    //           mutationId: "${uuidv4()}",
+    //           resolver: "${resolver}",
+    //           userToken: "${userToken}",
+    //         }
+    //         ){id cssColor}}`,
+    //   }),
+    // };
+    // fetch(`/graphql`, options)
+    //   .then((data) => data.json())
+    //   .then((result) => setColor(result.data.newColor.cssColor))
+    //   .catch((err) => console.log(err));
   };
 
   //------------------------- Lucky Number Mutation ------------------------------//

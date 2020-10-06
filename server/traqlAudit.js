@@ -6,25 +6,26 @@ function traqlAudit(traql) {
     open = false;
     if (Object.keys(traql).length > 1) {
       for (let key in traql) {
-        if (key !== 'subResolvers') {
+        if (key !== 'subResolvers' && traql[key].expectedNumberOfAqls >= 1) {
           if (
             traql[key].expectedNumberOfAqls ===
             traql[key].aqlsReceivedBack.length
           ) {
             //create base of query string to send all values to db
-            let queryString = `insert into Aql (id, mutation_send_time, mutation_received_time, subscriber_received_time, latency, mutation_id, resolver, expected_subscribers, successful_subscribers, user_token) values `;
+            let queryString = `insert into Aql (id, mutation_send_time, mutation_received_time, subscriber_received_time, latency, mutation_id, resolver, expected_subscribers, successful_subscribers, user_token) values`;
+            console.log(JSON.stringify(traql));
             //loop through aqls in mutation Id
             for (let aql of traql[key].aqlsReceivedBack) {
               //add one aql of data to query string
               queryString = queryString.concat(
-                ` ('${aql.id}', '${aql.mutationSendTime}', '${aql.mutationReceived}', '${aql.subscriberReceived}', '${aql.roundtripTime}', '${aql.mutationId}', '${aql.resolver}', ${traql[key].expectedNumberOfAqls}, ${traql[key].aqlsReceivedBack.length}), '${aql.userToken}`
+                ` ('${aql.id}', '${aql.mutationSendTime}', '${aql.mutationReceived}', '${aql.subscriberReceived}', '${aql.roundtripTime}', '${aql.mutationId}', '${aql.resolver}', ${traql[key].expectedNumberOfAqls}, ${traql[key].aqlsReceivedBack.length}, '${aql.userToken}'),`
               );
             }
-            console.log('queryString before slice: ', queryString);
+            //console.log('queryString before slice: ', queryString);
             queryString = queryString.slice(0, -1);
             queryString = queryString + ';';
-            console.log('queryString before call: ', queryString);
-            console.log('calling');
+            //console.log('queryString before call: ', queryString);
+            console.log('sending successful aqls to db');
             db.query(queryString, (err, res) => {
               if (err) {
                 console.log(err);
@@ -52,7 +53,7 @@ function traqlAudit(traql) {
                   traql[key].expectedNumberOfAqls,
                   traql[key].aqlsReceivedBack.length,
                   true,
-                  aql.userToken
+                  aql.userToken,
                 ];
                 console.log('i tried to send to db');
                 db.query(errorQueryString, errorQueryValues, (err, res) => {
@@ -70,7 +71,7 @@ function traqlAudit(traql) {
                 traql[key].expectedNumberOfAqls,
                 traql[key].aqlsReceivedBack.length,
                 true,
-                traql[key].userToken
+                traql[key].userToken,
               ];
               db.query(traqlErrorQueryString, traqlErrorValues, (err, res) => {
                 if (err) {
