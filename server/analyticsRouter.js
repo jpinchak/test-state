@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 function analyticsRouter(traql) {
-  console.log('in AnalyticsRouter');
+
   return router.post(
     '/',
     (req, res, next) => {
