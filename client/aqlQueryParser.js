@@ -3,6 +3,8 @@ import { gql } from '@apollo/client';
 
 // aqlQueryParser uses classic iterative parsing to extract the resolver from the query, inject a correctly formatted AQL containing the resolver into the body of the query arguments.
 
+// update necessary to accept non-string query args
+
 function aqlQueryParser(queryString) {
   let returnQuery = '';
   let inResolver = false;
@@ -36,9 +38,5 @@ function aqlQueryParser(queryString) {
   }
   return returnQuery;
 }
-
-const chosenColor = 'blue';
-const colorQuery = `mutation{newColor(colorArg: "blue"){id cssColor}}`;
-console.log(aqlQueryParser(colorQuery));
 
 export default aqlQueryParser;
