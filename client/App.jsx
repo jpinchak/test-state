@@ -201,7 +201,7 @@ function App() {
           alignItems: 'center',
         }}
       >
-        <h1 style={{ fontSize: '5rem' }}> Lucky Number {luckyNumber} </h1>
+        <h1> Lucky Number {luckyNumber} </h1>
         <button onClick={() => handleNumberClick('newLuckyNumber')}>
           {' '}
           New Lucky Number{' '}

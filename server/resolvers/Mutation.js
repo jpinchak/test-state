@@ -1,8 +1,24 @@
-const { newAql, newTraqlEntry } = require('../aql');
+const newAql = require('../aql');
+const newTraqlEntry = require('../newTraqlEntry');
+
+// interface AqlArgInput {
+//   mutationSendTime: string;
+//   mutationReceived: string;
+//   subscriberReceived: string;
+//   mutationId: string;
+//   resolver: string;
+//   userToken: string;
+// }
+
+// interface NewColorArg {
+//   colorArg: string;
+//   aql: AqlArgInput;
+// }
+
 function newColor(parent, args, { db, pubsub, traql }, info) {
-  console.log(args);
   db.color.cssColor = args.colorArg;
   pubsub.publish('COLOR_MUTATED', {
+    //create a helper function that takes payload object and returns payload obj including the updated Aql with current time stamped on it.
     updatedColor: {
       ...db.color,
       aql: newAql(args),

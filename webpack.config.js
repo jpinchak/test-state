@@ -1,5 +1,4 @@
 const path = require('path');
-
 module.exports = {
   entry: './client/index.js',
   output: {
@@ -20,6 +19,11 @@ module.exports = {
         },
       },
       {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
+      {
         test: /\.s[ac]ss$/i,
         use: [
           // Creates `style` nodes from JS strings
@@ -31,6 +35,10 @@ module.exports = {
         ],
       },
     ],
+  },
+  resolve: {
+    // Add '.ts' and '.tsx' as resolvable extensions.
+    extensions: ['.ts', '.tsx', '.js'],
   },
   devServer: {
     publicPath: '/build/',

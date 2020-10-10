@@ -1,14 +1,4 @@
-function newTraqlEntry(traql, args, pubsub) {
-  traql[args.aql.mutationId] = {
-    resolver: args.aql.resolver,
-    openedTime: Date.now(),
-    expectedNumberOfAqls: Math.floor(
-      Object.keys(pubsub.subscriptions).length / traql.subResolvers
-    ),
-    aqlsReceivedBack: [],
-    userToken: args.aql.userToken
-  };
-}
+//Creates a copy of the received AQL, adds a mutationReceived property of the current time, and returns copy to subscription payload to travel to subscribers.
 
 function newAql(args) {
   const aql = {
@@ -18,4 +8,6 @@ function newAql(args) {
   return aql;
 }
 
-module.exports = { newTraqlEntry, newAql };
+module.exports = newAql;
+
+//create a helper function that takes payload object and returns payload obj including the updated Aql with current time stamped on it.

@@ -1,6 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
 import { gql } from '@apollo/client';
 
+// aqlQueryParser uses classic iterative parsing to extract the resolver from the query, inject a correctly formatted AQL containing the resolver into the body of the query arguments.
+
 function aqlQueryParser(queryString) {
   let returnQuery = '';
   let inResolver = false;
