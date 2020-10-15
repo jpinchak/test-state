@@ -7,7 +7,7 @@ function analyticsRouter(traql) {
     '/',
     (req, res, next) => {
       // put aql into traql
-      console.log('request: ', req.body);
+      //console.log('request: ', req.body);
       traql[req.body.mutationId].aqlsReceivedBack.push(req.body);
       return next();
     },

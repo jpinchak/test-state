@@ -11,7 +11,7 @@ function useAqlMutation(query) {
         query: aqlQueryParser(query),
       }),
     };
-    console.log(aqlQueryParser(query));
+    //console.log(aqlQueryParser(query));
     fetch(`/graphql`, options)
       .then((data) => data.json())
       .then((result) => resolve(result))

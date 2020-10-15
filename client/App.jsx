@@ -41,7 +41,7 @@ function App() {
     setColor(chosenColor);
 
     useAqlMutation(colorQuery).then((data) =>
-      console.log('data returned from useMutation:', data)
+      console.log('data returned from useMutation:', /*data*/)
     );
     // const options = {
     //   method: 'post',
@@ -90,7 +90,7 @@ function App() {
       aqlToSendToDB.roundtripTime = `${
         aqlToSendToDB.subscriberReceived - aqlToSendToDB.mutationSendTime
       } ms`;
-      console.log(aqlToSendToDB);
+      //console.log(aqlToSendToDB);
       const {
         mutationSendTime,
         mutationReceived,

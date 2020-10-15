@@ -7,7 +7,7 @@ function useAqlSubscription(client, payloadProperty) {
   aqlToSendToDB.roundtripTime = `${
     aqlToSendToDB.subscriberReceived - aqlToSendToDB.mutationSendTime
   }`;
-  console.log(aqlToSendToDB);
+  //console.log(aqlToSendToDB);
   const {
     mutationSendTime,
     mutationReceived,
@@ -34,7 +34,7 @@ function useAqlSubscription(client, payloadProperty) {
   fetch(`/analytics`, options)
     // .then((data) => data.json())
     // .then((result) => setColor(result.data.newColor.cssColor))
-    .catch((err) => console.log(err));
+    .catch((err) => console.log('subscription err'));
 }
 
 export default useAqlSubscription;
